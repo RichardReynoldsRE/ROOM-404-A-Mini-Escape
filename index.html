@@ -3,76 +3,78 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>ROOM 404 — A Mini Escape</title>
-  <meta name="description" content="A single-file, GitHub-Pages-ready escape room web app with puzzles, inventory, timer, and save/resume." />
+  <title>Pirate Pop Escape — A Friendly Mini Escape Room</title>
+  <meta name="description" content="A single-file, kid-and-grownup-friendly escape room for the browser. Bright visuals, simple puzzles, mobile friendly, GitHub Pages ready." />
   <style>
     :root{
-      --bg:#0b0f14; --panel:#111827; --muted:#6b7280; --text:#e5e7eb; --primary:#22d3ee; --accent:#a78bfa; --good:#34d399; --bad:#f87171; --warn:#fbbf24;
+      --bg:#06131a; --sea:#0b2540; --sand:#fed7aa; --text:#fff8f0; --muted:#ffe8d4;
+      --pink:#ff80ab; --yellow:#ffd166; --green:#06d6a0; --blue:#5ab3ff; --purple:#b39ddb; --dark:#0b1020;
+      --line:#143a52; --card:#0e2135; --good:#19d176; --bad:#ff6b6b; --warn:#ffd166;
     }
     *,*:before,*:after{box-sizing:border-box}
     html,body{height:100%}
-    body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,Ubuntu,Helvetica,Arial,sans-serif;background:radial-gradient(1200px 800px at 80% -10%,#1e293b 0%,transparent 60%),var(--bg);color:var(--text);}
-    a{color:var(--primary)}
-    .app{max-width:1100px;margin:0 auto;padding:16px 16px 120px;}
-    header{display:flex;gap:16px;align-items:center;justify-content:space-between;margin:12px 0 20px}
-    .title{display:flex;align-items:center;gap:12px}
-    .logo{width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,var(--primary),var(--accent));display:grid;place-items:center;box-shadow:0 8px 24px #0008;color:#001018;font-weight:900}
-    .tag{font-size:12px;color:var(--muted)}
+    body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Helvetica,Arial,sans-serif;background:linear-gradient(180deg,var(--sea),#072033 50%,#051520);color:var(--text)}
+    .app{max-width:1100px;margin:0 auto;padding:16px 16px 120px}
+    header{display:flex;gap:16px;align-items:center;justify-content:space-between;margin:10px 0 18px}
+    .brand{display:flex;gap:12px;align-items:center}
+    .logo{width:46px;height:46px;border-radius:14px;background:conic-gradient(from 120deg,var(--pink),var(--yellow),var(--green),var(--blue));display:grid;place-items:center;color:#06202c;font-weight:900;box-shadow:0 12px 30px #0008}
+    .subtitle{color:var(--muted);font-size:13px}
     .hud{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
-    .chip{background:#0f172a;border:1px solid #1f2937;color:var(--text);padding:6px 10px;border-radius:999px;font-size:12px;display:flex;gap:8px;align-items:center}
-    .btn{cursor:pointer;border:1px solid #30363d;background:#0b1220;color:var(--text);padding:10px 14px;border-radius:12px;transition:transform .08s ease,background .2s ease,border-color .2s ease}
-    .btn:hover{transform:translateY(-1px);border-color:#3b82f6}
-    .btn.primary{background:linear-gradient(135deg,#0ea5e9 0%,#8b5cf6 100%);border-color:transparent}
+    .chip{background:#0d2235;border:1px solid var(--line);padding:8px 12px;border-radius:999px;font-size:12px}
+    .btn{cursor:pointer;border:1px solid var(--line);background:#0a1a29;color:var(--text);padding:10px 14px;border-radius:12px;transition:transform .08s ease,filter .2s ease}
+    .btn:hover{transform:translateY(-1px);filter:brightness(1.1)}
+    .btn.primary{background:linear-gradient(135deg,var(--pink),var(--yellow));color:#08222b;border:none}
+
     .layout{display:grid;grid-template-columns:320px 1fr;gap:16px}
     @media (max-width:900px){.layout{grid-template-columns:1fr}}
 
-    .panel{background:#0c1324;border:1px solid #1f2937;border-radius:16px;box-shadow:0 20px 60px #0006;overflow:hidden}
-    .panel h3{margin:0;padding:14px 16px;border-bottom:1px solid #1f2937;background:#0e172b}
+    .panel{background:#0c1f31;border:1px solid var(--line);border-radius:16px;box-shadow:0 20px 60px #0006;overflow:hidden}
+    .panel h3{margin:0;padding:14px 16px;border-bottom:1px solid var(--line);background:#0f2941}
     .panel .body{padding:14px}
 
     /* Scene */
-    .scene{aspect-ratio:16/10;min-height:320px;background:
-      radial-gradient(800px 400px at 90% 10%, #0ea5e91f, transparent 60%),
-      linear-gradient(#0b1020, #0c1224);
-      position:relative;border-radius:16px;border:1px solid #1f2937;overflow:hidden}
-    .scene .room-floor{position:absolute;inset:auto 0 0 0;height:34%;background:linear-gradient(#0b1120,#0a0f1a);border-top:1px solid #1f2937}
-    .hotspot{position:absolute;outline:2px dashed transparent;transition:transform .08s ease, outline-color .2s ease}
-    .hotspot:focus-visible{outline-color:#60a5fa;border-radius:10px}
+    .scene{aspect-ratio:16/10;min-height:320px;position:relative;border-radius:16px;border:2px solid var(--line);overflow:hidden;background:
+      linear-gradient(180deg,#0e3354 0 58%, var(--sand) 58%);
+    }
+    .wave{position:absolute;inset:0 0 auto 0;height:58%;background:radial-gradient(1400px 400px at 10% -40%,#58afff40,transparent 60%)}
+    .beach{position:absolute;inset:auto 0 0 0;height:42%;background:repeating-linear-gradient(45deg, #ffd7a6, #ffd7a6 6px,#fecb8e 6px,#fecb8e 12px)}
+
+    /* Tap targets */
+    .hotspot{position:absolute;outline:2px dashed transparent;transition:outline-color .2s ease, transform .08s ease}
+    .hotspot:focus-visible{outline-color:#7dd3fc;border-radius:10px}
     .hotspot button{all:unset;display:block;width:100%;height:100%;cursor:pointer}
 
     /* Objects */
-    .poster{left:8%;top:12%;width:18%;height:28%;background:#0b132a;border:2px solid #1f2a44;border-radius:8px;display:grid;place-items:center}
-    .poster:after{content:"RULE #?";font-weight:800;letter-spacing:.08em;color:#93c5fd}
-    .desk{left:26%;bottom:8%;width:34%;height:22%;background:linear-gradient(#0f172a,#0b1220);border:2px solid #1e293b;border-radius:8px}
-    .drawer{position:absolute;right:8%;bottom:9%;width:18%;height:26%;background:linear-gradient(#0f172a,#0b1220);border:2px solid #1e293b;border-radius:8px}
-    .locker{position:absolute;left:64%;top:18%;width:14%;height:48%;background:linear-gradient(#0f172a,#0b1220);border:2px solid #1e293b;border-radius:8px}
-    .door{position:absolute;right:4%;top:10%;width:16%;height:70%;background:linear-gradient(#0a0f1a,#0c1224);border:2px solid #273449;border-radius:12px;box-shadow:inset 0 0 0 6px #0b152a}
-    .door:after{content:"";position:absolute;right:10%;top:44%;width:12px;height:12px;border-radius:50%;background:#a78bfa}
+    .flag{left:6%;top:10%;width:18%;height:28%;border-radius:10px;background:linear-gradient(90deg,var(--pink) 0 25%,var(--yellow) 25% 50%,var(--green) 50% 75%,var(--blue) 75%);border:2px solid #ffffff33;box-shadow:0 6px 18px #0006}
+    .desk{left:26%;bottom:10%;width:34%;height:22%;background:linear-gradient(#11304f,#0e2840);border:2px solid #ffffff22;border-radius:10px}
+    .chest{left:68%;bottom:12%;width:18%;height:24%;background:linear-gradient(#7b4b17,#5b360f);border:2px solid #3b250b;border-radius:12px;box-shadow:inset 0 0 0 6px #3f2a10}
+    .barrel{left:60%;top:18%;width:14%;height:40%;background:radial-gradient(circle at 30% 30%,#84562a,#5a3618);border:2px solid #3b250b;border-radius:12px}
+    .door{right:4%;top:10%;width:16%;height:70%;background:linear-gradient(#082234,#0b2b44);border:2px solid #0f3a57;border-radius:12px;box-shadow:inset 0 0 0 6px #0a2236}
+    .door:after{content:"";position:absolute;right:10%;top:44%;width:12px;height:12px;border-radius:50%;background:#ffd166}
 
     /* Inventory */
     .inventory{display:flex;flex-wrap:wrap;gap:8px}
-    .slot{flex:1 0 72px;min-width:72px;height:66px;border:1px dashed #334155;border-radius:10px;display:grid;place-items:center;color:#94a3b8;font-size:12px;position:relative}
-    .slot.have{border-style:solid;border-color:#22d3ee;color:#e2e8f0}
-    .slot .qty{position:absolute;right:8px;bottom:6px;background:#0b1220;border:1px solid #334155;border-radius:999px;padding:2px 6px;font-size:10px}
+    .slot{flex:1 0 72px;min-width:72px;height:66px;border:1px dashed #477aa6;border-radius:10px;display:grid;place-items:center;color:#e0f2fe;font-size:12px;position:relative;background:#0a1f31}
+    .slot.have{border-style:solid;border-color:#8be9ff;color:#fff}
+    .slot .qty{position:absolute;right:8px;bottom:6px;background:#07314d;border:1px solid #477aa6;border-radius:999px;padding:2px 6px;font-size:10px}
 
     /* Modal */
-    dialog{border:none;border-radius:16px;padding:0;background:#0b1220;color:var(--text);max-width:min(680px,92vw);box-shadow:0 40px 120px #000a}
-    dialog::backdrop{background:linear-gradient(#0b0f1488,#0b0f1499)}
-    .modal-head{padding:12px 16px;border-bottom:1px solid #1f2937;background:#0e172b;display:flex;justify-content:space-between;align-items:center;gap:12px}
+    dialog{border:none;border-radius:16px;padding:0;background:#0a1f31;color:var(--text);max-width:min(720px,92vw);box-shadow:0 40px 120px #000a}
+    dialog::backdrop{background:linear-gradient(#06131acc,#06131add)}
+    .modal-head{padding:12px 16px;border-bottom:1px solid var(--line);background:#0f2941;display:flex;justify-content:space-between;align-items:center;gap:12px}
     .modal-body{padding:16px}
-    .input, input[type="text"], input[type="number"], .keypad-input{background:#0a1020;border:1px solid #334155;border-radius:12px;color:var(--text);padding:10px 12px;width:100%}
+    .input, input[type="text"], input[type="number"], .keypad-input{background:#0b1d2d;border:1px solid #2c5677;border-radius:12px;color:var(--text);padding:10px 12px;width:100%}
     .grid{display:grid;gap:10px}
     .grid.cols-2{grid-template-columns:1fr 1fr}
     .keypad{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
-    .keypad button{padding:14px 0;border-radius:12px;border:1px solid #334155;background:#0b1220;color:#e5e7eb;cursor:pointer}
-    .note{border-left:3px solid #60a5fa;background:#0a1424;padding:10px 12px;border-radius:6px;color:#c7d2fe}
-    .hint{border-left:3px solid var(--warn);background:#231b06;color:#fde68a}
+    .keypad button{padding:14px 0;border-radius:12px;border:1px solid #2c5677;background:#0b1d2d;color:#e5f0ff;cursor:pointer}
+    .note{border-left:4px solid var(--yellow);background:#2a3b4a;padding:10px 12px;border-radius:8px;color:#fff7e6}
+    .hint{border-left:4px solid var(--pink);background:#3a2842;color:#ffe6f5}
 
     /* Toast */
     .toast{position:fixed;left:50%;transform:translateX(-50%);bottom:18px;display:grid;gap:8px;max-width:90vw;z-index:99}
-    .toast .t{background:#0b1220;border:1px solid #1f2937;border-radius:12px;padding:10px 12px}
+    .toast .t{background:#0b1d2d;border:1px solid var(--line);border-radius:12px;padding:10px 12px}
 
-    /* Footer */
     footer{position:fixed;inset:auto 0 0 0;background:linear-gradient(180deg,transparent,#0006 20%,#000e);backdrop-filter:blur(6px);padding:10px}
     .footer-inner{max-width:1100px;margin:0 auto;display:flex;align-items:center;gap:10px;justify-content:space-between}
   </style>
@@ -80,16 +82,16 @@
 <body>
   <div class="app" id="app">
     <header>
-      <div class="title">
-        <div class="logo">404</div>
+      <div class="brand">
+        <div class="logo">🏴‍☠️</div>
         <div>
-          <div style="font-weight:800;letter-spacing:.06em">ROOM 404 — A Mini Escape</div>
-          <div class="tag">Single‑file puzzle adventure • Save/Resume • Keyboard & mobile friendly</div>
+          <div style="font-weight:800;letter-spacing:.04em;font-size:18px">Pirate Pop Escape</div>
+          <div class="subtitle">Bright, beginner‑friendly puzzles • Mobile & keyboard ready • Single file</div>
         </div>
       </div>
       <div class="hud">
         <div class="chip" aria-live="polite">⏱ <span id="timer">00:00</span></div>
-        <div class="chip">🔒 Locks <span id="locksLeft">3</span>/3</div>
+        <div class="chip">🔓 To go: <span id="locksLeft">3</span></div>
         <button class="btn" id="btnHint">💡 Hint</button>
         <button class="btn" id="btnReset">↺ Reset</button>
         <button class="btn primary" id="btnSave">💾 Save</button>
@@ -104,14 +106,15 @@
         </div>
       </div>
       <div class="panel">
-        <h3>Room</h3>
+        <h3>Pirate Hut</h3>
         <div class="body">
           <div class="scene" id="scene" aria-label="Room scene">
-            <div class="room-floor"></div>
-            <div class="hotspot poster" role="button" aria-label="Mysterious poster" tabindex="0" data-action="poster"></div>
-            <div class="hotspot desk" role="button" aria-label="Desk" tabindex="0" data-action="desk"></div>
-            <div class="hotspot drawer" role="button" aria-label="Drawer with keypad" tabindex="0" data-action="drawer"></div>
-            <div class="hotspot locker" role="button" aria-label="Tall locker" tabindex="0" data-action="locker"></div>
+            <div class="wave"></div>
+            <div class="beach"></div>
+            <div class="hotspot flag" role="button" aria-label="Striped pirate flag" tabindex="0" data-action="flag"></div>
+            <div class="hotspot desk" role="button" aria-label="Desk with map" tabindex="0" data-action="desk"></div>
+            <div class="hotspot chest" role="button" aria-label="Treasure chest with number lock" tabindex="0" data-action="chest"></div>
+            <div class="hotspot barrel" role="button" aria-label="Barrel with word lock" tabindex="0" data-action="barrel"></div>
             <div class="hotspot door" role="button" aria-label="Exit door" tabindex="0" data-action="door"></div>
           </div>
         </div>
@@ -130,288 +133,150 @@
 
     <footer>
       <div class="footer-inner">
-        <div>Protip: Press <kbd>H</kbd> for hints, <kbd>S</kbd> to save, <kbd>R</kbd> to reset.</div>
-        <div>© ROOM 404 • MIT License</div>
+        <div>Protip: <kbd>H</kbd> = hint, <kbd>S</kbd> = save, <kbd>R</kbd> = reset.</div>
+        <div>© Pirate Pop • MIT License</div>
       </div>
     </footer>
   </div>
 
   <script>
   ;(()=>{
-    const STORAGE_KEY = 'room404_state_v1';
-    const $ = (sel, el=document)=>el.querySelector(sel);
-    const $$ = (sel, el=document)=>[...el.querySelectorAll(sel)];
+    const STORAGE_KEY='pirate_pop_state_v1';
+    const $=(s,e=document)=>e.querySelector(s); const $$=(s,e=document)=>[...e.querySelectorAll(s)];
 
-    const state = {
-      startedAt: null,
-      elapsed: 0, // seconds
-      locks: { drawer:false, locker:false, door:false },
-      items: { key:false, uv:false, usb:false, note:false },
-      notes: [],
-      seenPoster:false
+    const state={
+      startedAt:null, elapsed:0,
+      locks:{chest:false,barrel:false,door:false},
+      items:{key:false,map:false,coin:false},
+      seenFlag:false
     };
 
-    // ===== Utilities =====
-    const fmt = s=>{
-      const m = Math.floor(s/60).toString().padStart(2,'0');
-      const sec = Math.floor(s%60).toString().padStart(2,'0');
-      return `${m}:${sec}`
-    }
-    const toast = (msg, cls='')=>{
-      const t = document.createElement('div');
-      t.className = 't '+cls; t.textContent = msg; $('#toast').appendChild(t);
-      setTimeout(()=>t.remove(), 2600);
-    }
+    // Utils
+    const fmt=s=>`${String(Math.floor(s/60)).padStart(2,'0')}:${String(Math.floor(s%60)).padStart(2,'0')}`;
+    const toast=(m,c='')=>{const t=document.createElement('div');t.className='t '+c;t.textContent=m;$('#toast').appendChild(t);setTimeout(()=>t.remove(),2400)};
 
-    // ===== Timer =====
-    let tick=null;
-    function startTimer(){
-      if(state.startedAt==null){ state.startedAt=Date.now()-state.elapsed*1000; }
-      if(tick) clearInterval(tick);
-      tick = setInterval(()=>{
-        state.elapsed = Math.floor((Date.now()-state.startedAt)/1000);
-        $('#timer').textContent = fmt(state.elapsed);
-      }, 1000);
-    }
+    // Timer
+    let tick=null; function startTimer(){ if(state.startedAt==null){state.startedAt=Date.now()-state.elapsed*1000} if(tick)clearInterval(tick); tick=setInterval(()=>{state.elapsed=Math.floor((Date.now()-state.startedAt)/1000); $('#timer').textContent=fmt(state.elapsed)},1000) }
 
-    // ===== Save / Load / Reset =====
-    function save(){
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-      toast('Game saved.');
-    }
-    function load(){
-      const raw = localStorage.getItem(STORAGE_KEY);
-      if(!raw) return false;
-      try{
-        const s = JSON.parse(raw);
-        Object.assign(state, s);
-        updateUI();
-        startTimer();
-        toast('Save loaded.');
-        return true;
-      }catch(e){ console.warn(e); return false; }
-    }
-    function reset(){
-      Object.assign(state, {startedAt:null,elapsed:0,locks:{drawer:false,locker:false,door:false},items:{key:false,uv:false,usb:false,note:false},notes:[],seenPoster:false});
-      clearInterval(tick); tick=null; $('#timer').textContent='00:00';
-      updateUI(); toast('Game reset.');
-    }
+    // Save/load/reset
+    function save(){ localStorage.setItem(STORAGE_KEY,JSON.stringify(state)); toast('Saved.') }
+    function load(){ const raw=localStorage.getItem(STORAGE_KEY); if(!raw) return false; try{Object.assign(state,JSON.parse(raw)); updateUI(); startTimer(); toast('Loaded.'); return true;}catch(e){return false}}
+    function reset(){ Object.assign(state,{startedAt:null,elapsed:0,locks:{chest:false,barrel:false,door:false},items:{key:false,map:false,coin:false},seenFlag:false}); clearInterval(tick); tick=null; $('#timer').textContent='00:00'; updateUI(); toast('Reset.') }
 
-    // ===== Inventory UI =====
-    const INV_DEF = [
-      { id:'key', label:'Brass Key', emoji:'🗝️', hint:'Looks like it fits a small lock.' },
-      { id:'uv', label:'UV Flashlight', emoji:'🔦', hint:'Reveals hidden ink on paper.' },
-      { id:'usb', label:'USB Drive', emoji:'💾', hint:'Might hold a password.' },
-      { id:'note', label:'Torn Note', emoji:'📝', hint:'Numbers hide in plain sight.' },
+    // Inventory
+    const INV=[
+      {id:'map',label:'Treasure Map',emoji:'🗺️',hint:'Hints for the barrel word.'},
+      {id:'key',label:'Pirate Key',emoji:'🗝️',hint:'Opens the door lock.'},
+      {id:'coin',label:'Doubloon',emoji:'🪙',hint:'Not needed to escape, but shiny!'},
     ];
-    function renderInventory(){
-      const inv = $('#inventory'); inv.innerHTML='';
-      for(const slot of INV_DEF){
-        const have = !!state.items[slot.id];
-        const el = document.createElement('div');
-        el.className = 'slot'+(have?' have':'');
-        el.setAttribute('role','listitem');
-        el.innerHTML = have ? `<div title="${slot.hint}">${slot.emoji} ${slot.label}</div>` : '<div>— empty —</div>';
-        inv.appendChild(el);
-      }
-    }
+    function renderInv(){ const box=$('#inventory'); box.innerHTML=''; for(const s of INV){ const have=!!state.items[s.id]; const el=document.createElement('div'); el.className='slot'+(have?' have':''); el.setAttribute('role','listitem'); el.innerHTML=have?`${s.emoji} ${s.label}`:'— empty —'; el.title=have?s.hint:''; box.appendChild(el);} }
 
-    // ===== Locks Left HUD =====
-    function updateLocksLeft(){
-      const left = Object.values(state.locks).filter(v=>!v).length;
-      $('#locksLeft').textContent = left.toString();
-      if(left===0){ setTimeout(()=>win(), 300); }
-    }
+    function updateLocksLeft(){ const left=Object.values(state.locks).filter(v=>!v).length; $('#locksLeft').textContent=String(left); if(left===0) setTimeout(win,300); }
 
-    // ===== Modal helpers =====
-    const modal = $('#modal');
-    const openModal=(title, html)=>{ $('#modalTitle').textContent=title; $('#modalBody').innerHTML=html; modal.showModal(); }
+    // Modal helpers
+    const modal=$('#modal'); const openModal=(title,html)=>{ $('#modalTitle').textContent=title; $('#modalBody').innerHTML=html; modal.showModal(); };
     $('#modalClose').addEventListener('click',()=>modal.close());
 
-    // ===== Hotspot interactions =====
-    $('#scene').addEventListener('click', e=>{ const el = e.target.closest('.hotspot'); if(!el) return; handle(el.dataset.action); });
-    $('#scene').addEventListener('keydown', e=>{ if(e.key==='Enter' || e.key===' '){ const el = document.activeElement.closest('.hotspot'); if(!el) return; handle(el.dataset.action); }});
+    // Scene interactions
+    $('#scene').addEventListener('click',e=>{ const el=e.target.closest('.hotspot'); if(!el) return; handle(el.dataset.action); });
+    $('#scene').addEventListener('keydown',e=>{ if(e.key==='Enter'||e.key===' '){ const el=document.activeElement.closest('.hotspot'); if(!el) return; handle(el.dataset.action);} });
 
-    function handle(action){
-      if(!state.startedAt) startTimer();
-      switch(action){
-        case 'poster': return onPoster();
-        case 'desk': return onDesk();
-        case 'drawer': return onDrawer();
-        case 'locker': return onLocker();
-        case 'door': return onDoor();
-      }
-    }
+    function handle(a){ if(!state.startedAt) startTimer(); if(a==='flag') onFlag(); if(a==='desk') onDesk(); if(a==='chest') onChest(); if(a==='barrel') onBarrel(); if(a==='door') onDoor(); }
 
-    // --- Poster: hidden message with UV ---
-    function onPoster(){
-      state.seenPoster = true;
-      const hasUV = state.items.uv;
-      openModal('Mysterious Poster', `
-        <div class="grid" style="gap:14px">
-          <div class="note">"In this room, three truths unlock the way:<br> ① Count each <b>corner</b> you can see.<br> ② Sum the digits of the <b>clock</b> that struck at midnight.<br> ③ Then, <b>subtract</b> the number of vowels in ROOM ."</div>
-          ${hasUV ? `<div class="note hint">UV reveals: <b>RULE #4: ALWAYS START FROM ZERO</b></div>` : `<div class="note hint">A smudge hints there might be hidden ink here… if only you had a UV light.</div>`}
-          <div style="color:var(--muted)">Looks like a riddle. It might help somewhere else.</div>
-        </div>
+    // Flag = fun intro hint (colorful)
+    function onFlag(){
+      state.seenFlag=true;
+      openModal('Striped Flag',`
+        <div class="note">The parrot squawks: <b>"Colors are just for fun!"</b><br/>No puzzle here — but remember: pirates love bright things and simple clues.</div>
+        <p class="subtitle">Tip: Each lock has a clue you can read. Hints are friendly and won’t trick you.</p>
       `);
     }
 
-    // --- Desk: collect UV flashlight and note ---
+    // Desk = get MAP and a simple note
     function onDesk(){
-      const already = state.items.uv && state.items.note;
-      openModal('Desk', `
-        <p>A sleek metal desk. One drawer is ajar. Inside you find a small flashlight and a torn note.</p>
+      const gotAll = state.items.map && state.items.coin;
+      openModal('Desk',`
+        <p>On the desk you see a doodled <b>map</b> and a shiny <b>doubloon</b>.</p>
         <div class="grid cols-2">
-          <button class="btn" id="takeUV">🔦 Take UV Flashlight</button>
-          <button class="btn" id="takeNote">📝 Take Torn Note</button>
+          <button class="btn" id="takeMap">🗺️ Take Map</button>
+          <button class="btn" id="takeCoin">🪙 Take Doubloon</button>
         </div>
-        ${already?'<p class="tag">Looks like you already grabbed what you need here.</p>':''}
+        ${gotAll?'<p class="subtitle">Looks like you already grabbed the goodies.</p>':''}
+        <div class="hint" style="margin-top:10px">The map’s poem acrostic is helpful: <br/> <i>Glow of sunrise<br/> Over the dunes<br/> Lure of treasure<br/> Deep in the blue</i></div>
       `);
-      $('#takeUV')?.addEventListener('click',()=>{ if(!state.items.uv){ state.items.uv=true; toast('Picked up UV Flashlight.'); updateUI(); }});
-      $('#takeNote')?.addEventListener('click',()=>{ if(!state.items.note){ state.items.note=true; toast('Picked up Torn Note.'); updateUI(); }});
+      $('#takeMap')?.addEventListener('click',()=>{ if(!state.items.map){ state.items.map=true; toast('Picked up the Treasure Map.'); updateUI(); }});
+      $('#takeCoin')?.addEventListener('click',()=>{ if(!state.items.coin){ state.items.coin=true; toast('Picked up a Doubloon!'); updateUI(); }});
     }
 
-    // --- Drawer: keypad 3-digit, answer derived from poster ---
-    // Riddle explanation (for you, the dev):
-    // Corners visible in the room scene: approximate 8 main corners on walls + 4 floor corners + 4 desk + 4 drawer + 4 locker + door frame corners ~ BUT we keep it fair: we encode the needed result via the torn note once UV is used.
-    // To keep puzzle solvable, the torn note shows: "C=4, M=1+2+...+12=78, V=ROOM vowels=2; Answer=C+M-V = 4+78-2 = 80"; with "always start from zero" hint means treat midnight clock sum as 0? Better: We'll craft it to reveal the final code explicitly after combining items.
-
-    // Implementation: If player has both NOTE and UV and has seen poster, show a composed hint in this modal too.
-    function onDrawer(){
-      const solved = state.locks.drawer;
-      const comboHint = (state.items.note && state.items.uv && state.seenPoster)
-        ? `<div class="note">Assemble the clues: <br>• Corners in the poster frame = 4.<br>• Clock at midnight = 0 (start from zero).<br>• Vowels in ROOM = 2.<br><b>4 + 0 + 2 = 402</b></div>`
-        : `<div class="note">A keypad awaits. Perhaps the poster and a note could help…</div>`;
-      openModal('Locked Drawer', `
-        ${comboHint}
-        ${solved?'<p class="tag">The drawer is open. Nothing else inside.</p>':`
+    // Chest = simple 3-digit (Count-Me) — directly clued
+    function onChest(){
+      const solved=state.locks.chest;
+      openModal('Number Lock Chest',`
+        ${solved?'<p class="subtitle">Chest already open. You took the key.</p>':`
+        <div class="note">Clue stuck on the lid: <b>"Count skulls, parrots, and wheels in our hut!"</b><br/>Look around the artwork: there are <b>3 skulls</b>, <b>1 parrot</b>, and <b>2 ship wheels</b> hidden in the decor. Put them in that order.</div>
         <div class="grid" style="gap:12px;margin-top:8px">
-          <input class="keypad-input" id="codeA" inputmode="numeric" maxlength="3" placeholder="Enter 3‑digit code" />
-          <div class="keypad" aria-hidden="true">
-            ${[1,2,3,4,5,6,7,8,9,'←',0,'⏎'].map(n=>`<button data-k="${n}">${n}</button>`).join('')}
-          </div>
+          <input class="keypad-input" id="codeA" inputmode="numeric" maxlength="3" placeholder="3‑digit code (e.g., 312)" />
+          <div class="keypad" aria-hidden="true">${[1,2,3,4,5,6,7,8,9,'←',0,'⏎'].map(n=>`<button data-k="${n}">${n}</button>`).join('')}</div>
         </div>`}
       `);
-      if(!solved){
-        const inp = $('#codeA');
-        $('.keypad').addEventListener('click',e=>{
-          const b = e.target.closest('button'); if(!b) return; const k=b.dataset.k;
-          if(k==='←'){ inp.value = inp.value.slice(0,-1); return; }
-          if(k==='⏎'){ tryDrawer(inp.value); return; }
-          if((inp.value||'').length<3 && /\d/.test(k)) inp.value+=k;
-        });
-        inp.addEventListener('keydown',e=>{ if(e.key==='Enter') tryDrawer(inp.value) });
-      }
+      if(!solved){ const inp=$('#codeA'); $('.keypad').addEventListener('click',e=>{ const b=e.target.closest('button'); if(!b) return; const k=b.dataset.k; if(k==='←'){ inp.value=inp.value.slice(0,-1); return;} if(k==='⏎'){ tryChest(inp.value); return;} if((inp.value||'').length<3 && /\d/.test(k)) inp.value+=k; }); inp.addEventListener('keydown',e=>{ if(e.key==='Enter') tryChest(inp.value) }); }
     }
-    function tryDrawer(val){
-      if(val==='402'){
-        state.locks.drawer=true; state.items.key=true; modal.close(); toast('Drawer unlocks. You find a brass key!','good'); updateUI();
-      }else toast('Incorrect code.','bad');
-    }
+    function tryChest(val){ if(val==='312'){ state.locks.chest=true; state.items.key=true; modal.close(); toast('Chest opens! You got the Pirate Key.','good'); updateUI(); } else toast('Not quite. Try the order: skulls, parrots, wheels.','bad'); }
 
-    // --- Locker: word lock, requires USB inside ---
-    function onLocker(){
-      const solved = state.locks.locker;
-      openModal('Locker', `
-        ${solved?'<p class="tag">Unlocked. Empty now.</p>':`
-        <p>A dial-style <b>word lock</b> with four letters. A scribble reads: <i>"Opposite of <b>FULL</b> + start from zero"</i>.</p>
+    // Barrel = 4-letter word from map acrostic: G O L D
+    function onBarrel(){
+      const solved=state.locks.barrel;
+      openModal('Barrel (Word Lock)',`
+        ${solved?'<p class="subtitle">It\'s empty now. You already solved it.</p>':`
+        <p>A friendly four-letter lock. The map\'s poem hides the answer with the <b>first letters</b> of each line.</p>
         <div class="grid" style="gap:10px">
           <input id="wordLock" class="input" maxlength="4" placeholder="4‑letter word" />
           <button class="btn" id="btnTryWord">Try</button>
         </div>
-        <p class="tag">Hint: Consider the poster’s UV rule.</p>`}
-      `);
-      if(!solved){
-        $('#btnTryWord').addEventListener('click',()=>{
-          const word = ($('#wordLock').value||'').trim().toUpperCase();
-          if(word==='ZERO'){
-            state.locks.locker=true; state.items.usb=true; modal.close(); toast('Locker clicks open. There\'s a USB drive.','good'); updateUI();
-          } else toast('Nope. The lock stays shut.','bad');
-        });
-      }
+        ${state.items.map?'<p class="note">You inspect the map… those first letters spell something shiny.</p>':'<p class="hint">Maybe grab the map from the desk first.</p>'}`
+      );
+      if(!solved){ $('#btnTryWord').addEventListener('click',()=>{ const w=($('#wordLock').value||'').trim().toUpperCase(); if(w==='GOLD'){ state.locks.barrel=true; modal.close(); toast('Clack! The barrel opens (just snacks inside).','good'); updateUI(); } else toast('That\'s not the shiny word.','bad'); }); }
     }
 
-    // --- Door: keypad depends on reading USB on desk pc (virtual), requires key item ---
+    // Door = needs key + friendly magic word "OPEN" (explicit clue)
     function onDoor(){
-      if(!state.items.key){ openModal('Exit Door', `<p>The door has a modern keypad and a small keyhole. You need a <b>key</b> first.</p>`); return; }
-      // If they have USB: open a mini terminal to read a password. Otherwise a tougher clue appears.
-      const hasUSB = state.items.usb;
-      const solved = state.locks.door;
-      const doorContent = solved ? '<p class="tag">The door stands open. Freedom awaits.</p>' : `
-        <div class="note">Key inserted. The keypad blinks: <b>ENTER PASSCODE</b>.</div>
-        ${hasUSB?`
-          <p>You notice a hidden USB slot under the keypad.</p>
-          <button class="btn" id="btnUSB">Insert USB</button>
-          <div id="termWrap" style="margin-top:12px;display:none">
-            <div class="note">USB contents:</div>
-            <pre id="terminal" style="background:#0a1020;border:1px solid #1f2937;border-radius:12px;padding:12px;max-height:220px;overflow:auto">$ cat README.txt\nPasscode seed: FIZZ BUZZ but stop before 20.\nKeep only the numbers that are multiples of both 2 and 3.\nConcatenate them.\n</pre>
-            <div class="grid" style="margin-top:10px">
-              <input id="doorCode" class="input" placeholder="Enter passcode" />
-              <button class="btn" id="btnDoorTry">Unlock</button>
-            </div>
-          </div>
-        `:
-        `<p>The keypad asks for a passcode. There must be a way to derive it. Maybe a device in this room could reveal data…</p>
-         <div class="grid" style="gap:10px">
-           <input id="doorCode" class="input" placeholder="Enter passcode" />
-           <button class="btn" id="btnDoorTry">Unlock</button>
-         </div>`}
-      `;
-      openModal('Exit Door', doorContent);
-
-      if(!solved){
-        $('#btnUSB')?.addEventListener('click',()=>{ $('#termWrap').style.display='block'; });
-        $('#btnDoorTry')?.addEventListener('click',()=>{
-          const v = ($('#doorCode').value||'').trim();
-          // Explanation: multiples of both 2 and 3 under 20 => 6,12,18 => passcode "61218"
-          if(v==='61218'){
-            state.locks.door=true; modal.close(); win(); updateUI();
-          } else toast('Keypad flashes red.','bad');
-        });
-      }
-    }
-
-    // ===== Hints =====
-    const HINTS = [
-      'Explore everything. Objects highlight on hover/tap. Poster, desk, drawer, locker, door.',
-      'The drawer needs a 3‑digit code. The poster and a note will help.',
-      'UV light reveals a rule on the poster. Combine with the torn note.',
-      'WORD lock asks for opposite of FULL and to start from zero.',
-      'The door needs a passcode. The USB contains a hint about Fizz Buzz.'
-    ];
-    let hintIdx = 0;
-    function giveHint(){ toast(HINTS[Math.min(hintIdx++, HINTS.length-1)], ''); }
-
-    // ===== Win =====
-    function win(){
-      clearInterval(tick); tick=null;
-      openModal('You Escaped! 🎉', `
-        <p>Nice work! Final time: <b>${fmt(state.elapsed)}</b>.</p>
-        <div class="grid cols-2" style="margin-top:10px">
-          <button class="btn" id="btnAgain">Play Again</button>
-          <button class="btn primary" id="btnShare">Share Time</button>
+      if(!state.items.key){ openModal('Door',`<p>The door has a simple keypad and a keyhole. You\'ll need a <b>key</b> first.</p>`); return; }
+      const solved=state.locks.door;
+      openModal('Door', solved? '<p class="subtitle">Door is open — fresh sea breeze! 🏝️</p>' : `
+        <div class="note">You turn the key. A parrot above the door says: <b>"Say the magic word!"</b></div>
+        <div class="grid" style="gap:10px; margin-top:8px">
+          <input id="doorWord" class="input" maxlength="4" placeholder="Magic word (4 letters)" />
+          <button class="btn" id="btnDoorTry">Unlock</button>
         </div>
-        <p class="tag">Tip: Commit this file as <code>index.html</code> to a GitHub repo and enable GitHub Pages to share the game.</p>
+        <p class="subtitle">(It\'s the polite one pirates forget.)</p>
       `);
-      $('#btnAgain').addEventListener('click',()=>{ modal.close(); reset(); startTimer(); });
-      $('#btnShare').addEventListener('click',()=>{
-        const txt = `I escaped ROOM 404 in ${fmt(state.elapsed)}!`;
-        navigator.clipboard?.writeText(txt);
-        toast('Copied share text to clipboard.');
-      });
+      if(!solved){ $('#btnDoorTry').addEventListener('click',()=>{ const v=($('#doorWord').value||'').trim().toUpperCase(); if(v==='OPEN'){ state.locks.door=true; modal.close(); win(); updateUI(); } else toast('Polly squawks: "Not that word!"','bad'); }); }
     }
 
-    // ===== Global UI wiring =====
-    $('#btnHint').addEventListener('click', giveHint);
-    $('#btnSave').addEventListener('click', save);
-    $('#btnReset').addEventListener('click', reset);
-    window.addEventListener('keydown',e=>{
-      if(e.key==='h' || e.key==='H') giveHint();
-      if(e.key==='s' || e.key==='S') save();
-      if(e.key==='r' || e.key==='R') reset();
-    });
+    // Hints (gentle, no trickery)
+    const HINTS=[
+      'Tap around: Flag, Desk, Chest, Barrel, Door.',
+      'Chest: Use the clue on the lid — just count. Order: skulls, parrots, wheels.',
+      'Barrel: The map\'s poem hides letters. Read the FIRST letters down the left.',
+      'Door: You need the key from the chest, then type the polite 4-letter magic word.',
+      'Stuck? Try numbers before words, then finish at the door.'
+    ];
+    let hintIdx=0; function giveHint(){ toast(HINTS[Math.min(hintIdx++,HINTS.length-1)]) }
 
-    function updateUI(){ renderInventory(); updateLocksLeft(); }
+    function win(){ clearInterval(tick); tick=null; openModal('You Escaped! 🎉',`
+      <p>Well done, captain! Final time: <b>${fmt(state.elapsed)}</b>.</p>
+      <div class="grid cols-2" style="margin-top:10px">
+        <button class="btn" id="again">Play Again</button>
+        <button class="btn primary" id="share">Share Time</button>
+      </div>
+      <p class="subtitle">Tip: Save this as <code>index.html</code> in a GitHub repo and enable GitHub Pages.</p>
+    `); $('#again').addEventListener('click',()=>{ modal.close(); reset(); startTimer(); }); $('#share').addEventListener('click',()=>{ const txt=`I escaped Pirate Pop in ${fmt(state.elapsed)}!`; navigator.clipboard?.writeText(txt); toast('Copied!') }); }
+
+    // Wire up
+    $('#btnHint').addEventListener('click',giveHint); $('#btnSave').addEventListener('click',save); $('#btnReset').addEventListener('click',reset);
+    window.addEventListener('keydown',e=>{ if(e.key==='h'||e.key==='H') giveHint(); if(e.key==='s'||e.key==='S') save(); if(e.key==='r'||e.key==='R') reset(); });
+
+    function updateUI(){ renderInv(); updateLocksLeft(); }
 
     // Kickoff
     updateUI(); load(); if(!state.startedAt){ startTimer(); }
